@@ -8,15 +8,25 @@ public class Main {
 
     public static void main(String[] args) {
         displayStart();
-        boolean isUserInput = false;
-        Scanner scanner = new Scanner(System.in);
 
+        Scanner scanner = new Scanner(System.in);
+        if (selectDifficultLevel(scanner)) return;
+
+        Scanner scanner1 = new Scanner(System.in);
+        gameBoard(scanner1);
+
+        scanner1.close();
+        scanner.close();
+    }
+
+    private static boolean selectDifficultLevel(Scanner scanner) {
+        boolean isUserInput = false;
         while (!isUserInput) {
             System.out.println("Anfänger = 1, Fortgeschritten = 2, Profi = 3 | Anleitung = 9");
             System.out.println("Deine Auswahl:");
             int userChoice = convertingStartInput(scanner.next());
             if (userChoice == -1) {
-                return;
+                return true;
             } else if (userChoice == 9) {
                 System.out.println("Anleitung");
             } else if (userChoice > 0 && userChoice <= 3) {
@@ -26,11 +36,12 @@ public class Main {
                 System.out.println("Falsche Eingabe!");
             }
         }
+        return false;
+    }
 
-        Scanner scanner1 = new Scanner(System.in);
-        int gameRun = 0;
+    private static void gameBoard(Scanner scanner1) {
+        int gameRun;
         while (true) {
-            clearScreen();
             game.printArray();
             System.out.println("Mine:" + game.getMines());
             System.out.println("Feld aufdecken = (r Reihe Spalte) und Markieren = (f Reihe Spalte)");
@@ -46,9 +57,8 @@ public class Main {
             }
 
         }
-//scanner1.close();
-//        scanner.close();
     }
+
 
     public static int convertingStartInput(String userInput) {
         if (userInput.equals("EXIT")) return -1;
@@ -122,11 +132,6 @@ public class Main {
         return new PlayingField(rows, column, mine);
     }
 
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
-    }
-
     public static void displayStart() {
         String[] minesweeperArt = {
                 "███    ███ ██ ███    ██ ███████ ███████ ██     ██ ███████ ███████ ██████  ███████ ██████  ",
@@ -136,7 +141,6 @@ public class Main {
                 "██      ██ ██ ██   ████ ███████ ███████  ███ ███  ███████ ███████ ██      ███████ ██   ██ "
 
         };
-        clearScreen();
         for (String line : minesweeperArt) {
             System.out.println(line);
         }
