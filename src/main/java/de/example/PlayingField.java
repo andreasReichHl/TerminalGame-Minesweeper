@@ -9,18 +9,16 @@ public class PlayingField {
     private final int row;
     private final char[][] field;
     private final char[][] fieldUser;
-    private final char MINE = '*';
-    private final char HIDDENFIELD = '.';
-    private final char BUOY = 'F';
-    private final char EMPTY_FIELD = '0';
+
+
     private int mines;
 
     public PlayingField(int rows, int column, int mine) {
         this.column = column;
         this.row = rows;
         this.mines = mine;
-        this.field = charsArray(EMPTY_FIELD);
-        this.fieldUser = charsArray(HIDDENFIELD);
+        this.field = charsArray(Symbols.EMPTY_FIELD.asChar());
+        this.fieldUser = charsArray(Symbols.HIDDENFIELD.asChar());
         mineInField(mine);
     }
 
@@ -67,8 +65,8 @@ public class PlayingField {
         while (mines > 0) {
             int randomColumn = (int) (Math.random() * this.column);
             int randomRow = (int) (Math.random() * this.row);
-            if (this.field[randomRow][randomColumn] == MINE) return mineInField(mines);
-            this.field[randomRow][randomColumn] = MINE;
+            if (this.field[randomRow][randomColumn] == Symbols.MINE.asChar()) return mineInField(mines);
+            this.field[randomRow][randomColumn] = Symbols.MINE.asChar();
             determineTheNumbers(randomRow, randomColumn);
             --mines;
         }
@@ -76,30 +74,57 @@ public class PlayingField {
     }
 
     public void printArray() {
-        System.out.print("   ");
-        for (int j = 0; j < column; j++) {
-            if (j >= 10) {
-                System.out.print(j / 10 + " ");
-            } else {
-                System.out.print("  ");
-            }
-        }
-        System.out.println();
+        // Spaltenbeschriftung
         System.out.print("   ");
         for (int j = 0; j < column; j++) {
             System.out.print(j % 10 + " ");
         }
         System.out.println();
+
+        // Spielfeld drucken
         for (int i = 0; i < row; i++) {
-            System.out.print(i + " ");
-            if (i < 10) System.out.print(" ");
+            // Zeilenbeschriftung
+            System.out.print((i < 10 ? " " : "") + i + " ");
+
+            // Spielfeldinhalt
             for (int j = 0; j < column; j++) {
-                System.out.print(fieldUser[i][j] + " ");
+                char currentField = fieldUser[i][j];
+                switch (currentField) {
+                    case '0':
+                        System.out.print(Colors.DARK_GRAY.asColor() + currentField + Colors.RESET.asColor() +" ");
+                        break;
+                    case '1':
+                        System.out.print(Colors.BLUE.asColor() + currentField + Colors.RESET.asColor() +" ");
+                        break;
+                    case '2':
+                        System.out.print(Colors.GREEN.asColor() + currentField + Colors.RESET.asColor() +" ");
+                        break;
+                    case '3':
+                        System.out.print(Colors.RED.asColor() + currentField + Colors.RESET.asColor() +" ");
+                        break;
+                    case '4':
+                        System.out.print(Colors.DARK_BLUE.asColor() + currentField + Colors.RESET.asColor() +" ");
+                        break;
+                    case '5':
+                        System.out.print(Colors.DARK_RED.asColor() + currentField + Colors.RESET.asColor() +" ");
+                        break;
+                    case 'F':
+                        System.out.print("🚩");
+                        break;
+                    case '*':
+                        System.out.print("💣");  // Mine
+                        break;
+                        case '#':
+                        System.out.print(Colors.RED_BACKGROUND.asColor() + Colors.BLACK + "✘" + Colors.RESET.asColor());  // Mine
+                        break;
+                    default:
+                        System.out.print(currentField + " ");
+                        break;
+                }
             }
             System.out.println();
         }
     }
-
 
     private void determineTheNumbers(int mineRow, int mineColumn) {
         int startRow = Math.max(0, mineRow - 1);
@@ -111,7 +136,7 @@ public class PlayingField {
 
             for (int j = startColumn; j < endColumn; j++) {
                 char temp = field[startRow][j];
-                if (temp != MINE) {
+                if (temp != Symbols.MINE.asChar()) {
                     int number = temp - '0' + 1;
                     field[startRow][j] = (char) ('0' + number);
                 }
@@ -122,7 +147,7 @@ public class PlayingField {
     }
 
     public void clearEmptyFields(int row, int column) {
-        if (field[row][column] != EMPTY_FIELD) return;
+        if (field[row][column] != Symbols.EMPTY_FIELD.asChar()) return;
         List<int[][]> emptyFields = new ArrayList<>();
 
         int[][] startField = {{row, column}};
@@ -142,8 +167,8 @@ public class PlayingField {
                 for (int j = startColumn; j < endColumn; j++) {
                     char temp = field[startRow][j];
                     char tempUser = fieldUser[startRow][j];
-                    if (temp == EMPTY_FIELD && tempUser != EMPTY_FIELD) {
-                        fieldUser[startRow][j] = EMPTY_FIELD;
+                    if (temp == Symbols.EMPTY_FIELD.asChar() && tempUser != Symbols.EMPTY_FIELD.asChar()) {
+                        fieldUser[startRow][j] = Symbols.EMPTY_FIELD.asChar();
                         int[][] emptyField = {{startRow, j}};
                         emptyFields.add(emptyField);
                     } else {
@@ -159,20 +184,21 @@ public class PlayingField {
     public void clearThePlayingField() {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                if (fieldUser[i][j] == HIDDENFIELD) {
+                if (fieldUser[i][j] == Symbols.HIDDENFIELD.asChar()) {
                     fieldUser[i][j] = field[i][j];
                 }
-                if (fieldUser[i][j] == BUOY && field[i][j] != MINE)
-                    fieldUser[i][j] = '#';
+                if (fieldUser[i][j] == Symbols.FLAG.asChar() && field[i][j] != Symbols.MINE.asChar())
+                    fieldUser[i][j] = Symbols.WRONG_MARK.asChar();
             }
         }
     }
 
-    public int checkWin() {
+    public int evaluateGameWinStatus() {
         for (int i = 0; i < fieldUser.length; i++) {
             for (int j = 0; j < fieldUser[0].length; j++) {
-                if (fieldUser[i][j] == HIDDENFIELD) ;
-                return 0;
+                if (fieldUser[i][j] == Symbols.HIDDENFIELD.asChar()) {
+                    return 0;
+                }
             }
         }
         return -1;
