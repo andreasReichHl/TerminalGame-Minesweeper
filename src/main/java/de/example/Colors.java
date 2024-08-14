@@ -15,7 +15,8 @@ public enum Colors {
     // Background
 
     RED_BACKGROUND("\u001B[41m"),
-    BRIGHT_RED_BACKGROUND("\u001B[101m");
+    BRIGHT_RED_BACKGROUND("\u001B[101m"),
+    WHITE_BACKGROUND("\033[47m");
 
 
     private final String color;

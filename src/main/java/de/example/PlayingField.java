@@ -91,22 +91,22 @@ public class PlayingField {
                 char currentField = fieldUser[i][j];
                 switch (currentField) {
                     case '0':
-                        System.out.print(Colors.DARK_GRAY.asColor() + currentField + Colors.RESET.asColor() +" ");
+                        System.out.print(Colors.DARK_GRAY.asColor() + currentField + Colors.RESET.asColor() + " ");
                         break;
                     case '1':
-                        System.out.print(Colors.BLUE.asColor() + currentField + Colors.RESET.asColor() +" ");
+                        System.out.print(Colors.BLUE.asColor() + currentField + Colors.RESET.asColor() + " ");
                         break;
                     case '2':
-                        System.out.print(Colors.GREEN.asColor() + currentField + Colors.RESET.asColor() +" ");
+                        System.out.print(Colors.GREEN.asColor() + currentField + Colors.RESET.asColor() + " ");
                         break;
                     case '3':
-                        System.out.print(Colors.RED.asColor() + currentField + Colors.RESET.asColor() +" ");
+                        System.out.print(Colors.RED.asColor() + currentField + Colors.RESET.asColor() + " ");
                         break;
                     case '4':
-                        System.out.print(Colors.DARK_BLUE.asColor() + currentField + Colors.RESET.asColor() +" ");
+                        System.out.print(Colors.DARK_BLUE.asColor() + currentField + Colors.RESET.asColor() + " ");
                         break;
                     case '5':
-                        System.out.print(Colors.DARK_RED.asColor() + currentField + Colors.RESET.asColor() +" ");
+                        System.out.print(Colors.DARK_RED.asColor() + currentField + Colors.RESET.asColor() + " ");
                         break;
                     case 'F':
                         System.out.print("🚩");
@@ -114,8 +114,11 @@ public class PlayingField {
                     case '*':
                         System.out.print("💣");  // Mine
                         break;
-                        case '#':
-                        System.out.print(Colors.RED_BACKGROUND.asColor() + Colors.BLACK + "✘" + Colors.RESET.asColor());  // Mine
+                    case '#':
+                        System.out.print(Colors.RED_BACKGROUND.asColor() + Colors.BLACK.asColor() + "✘" + Colors.RESET.asColor());  // Mine
+                        break;
+                    case '.':
+                        System.out.print(currentField + " ");  // Mine
                         break;
                     default:
                         System.out.print(currentField + " ");
