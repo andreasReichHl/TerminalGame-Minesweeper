@@ -74,19 +74,26 @@ public class PlayingField {
     }
 
     public void printArray() {
-        // Spaltenbeschriftung
+        System.out.print("   ");
+        for (int j = 0; j < column; j++) {
+            if (j >= 10) {
+                System.out.print(j / 10 + " ");
+            } else {
+                System.out.print("  ");
+            }
+        }
+        System.out.println();
+
         System.out.print("   ");
         for (int j = 0; j < column; j++) {
             System.out.print(j % 10 + " ");
         }
         System.out.println();
 
-        // Spielfeld drucken
+
         for (int i = 0; i < row; i++) {
-            // Zeilenbeschriftung
             System.out.print((i < 10 ? " " : "") + i + " ");
 
-            // Spielfeldinhalt
             for (int j = 0; j < column; j++) {
                 char currentField = fieldUser[i][j];
                 switch (currentField) {
@@ -118,8 +125,6 @@ public class PlayingField {
                         System.out.print(Colors.RED_BACKGROUND.asColor() + Colors.BLACK.asColor() + "✘" + Colors.RESET.asColor());  // Mine
                         break;
                     case '.':
-                        System.out.print(currentField + " ");  // Mine
-                        break;
                     default:
                         System.out.print(currentField + " ");
                         break;
@@ -128,6 +133,7 @@ public class PlayingField {
             System.out.println();
         }
     }
+
 
     private void determineTheNumbers(int mineRow, int mineColumn) {
         int startRow = Math.max(0, mineRow - 1);

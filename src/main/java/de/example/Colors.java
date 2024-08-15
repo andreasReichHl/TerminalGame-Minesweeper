@@ -7,16 +7,13 @@ public enum Colors {
     GREEN("\u001B[32m"),
     DARK_BLUE("\u001B[94m"),
     RED  ("\033[0;31m"),
-    YELLOW ("\u001B[33m"),
-    MAGENTA ("\u001B[35m"),
     DARK_RED("\u001B[31m"),
     BLACK("\u001B[30m"),
 
     // Background
 
-    RED_BACKGROUND("\u001B[41m"),
-    BRIGHT_RED_BACKGROUND("\u001B[101m"),
-    WHITE_BACKGROUND("\033[47m");
+    RED_BACKGROUND("\u001B[41m");
+
 
 
     private final String color;

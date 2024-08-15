@@ -1,19 +1,22 @@
 package de.example;
 
 public class GameStatistics {
-    private final long startTime;
+    private long startTime;
     private long endTime;
 
     public GameStatistics() {
-        this.startTime = System.currentTimeMillis();
+//        this.startTime = System.nanoTime();
     }
 
+    public void setStartTime() {
+        this.startTime = System.nanoTime();
+    }
     public void endGame() {
-        this.endTime = System.currentTimeMillis();
+        this.endTime = System.nanoTime();
     }
 
     public void printSummary(boolean won) {
-        long duration = (endTime - startTime) / 1000; // Dauer in Sekunden
+        long duration = (endTime - startTime) / 1000000000; //
         System.out.println("Spiel beendet!");
         System.out.println("Ergebnis: " + (won ? "Gewonnen" : "Verloren"));
         System.out.println("Dauer des Spiels: " + duration + " Sekunden");

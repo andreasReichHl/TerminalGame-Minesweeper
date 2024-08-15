@@ -48,6 +48,7 @@ public class Main {
     private static void gameBoard(Scanner scanner1) {
         while (true) {
             GameStatistics stats = new GameStatistics();
+            stats.setStartTime();
             playingField.printArray();
             System.out.println("Mine: " + playingField.getMines());
             System.out.println(BOLD + "Feld aufdecken = r Reihe Spalte oder Flagge setzen/ entfernen = f Reihe Spalte" + RESET);
