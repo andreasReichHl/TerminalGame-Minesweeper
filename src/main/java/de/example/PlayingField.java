@@ -19,7 +19,7 @@ public class PlayingField {
         this.mines = mine;
         this.field = charsArray(Symbols.EMPTY_FIELD.asChar());
         this.fieldUser = charsArray(Symbols.HIDDENFIELD.asChar());
-        mineInField(mine);
+        mineInField(mines);
     }
 
     public int getMines() {
@@ -190,11 +190,15 @@ public class PlayingField {
         }
     }
 
-    public void clearThePlayingField() {
+    public void clearThePlayingField(boolean won) {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
                 if (fieldUser[i][j] == Symbols.HIDDENFIELD.asChar()) {
+                    if(won && field[i][j] == Symbols.MINE.asChar()){
+                        fieldUser[i][j] = Symbols.FLAG.asChar();
+                    }else {
                     fieldUser[i][j] = field[i][j];
+                    }
                 }
                 if (fieldUser[i][j] == Symbols.FLAG.asChar() && field[i][j] != Symbols.MINE.asChar())
                     fieldUser[i][j] = Symbols.WRONG_MARK.asChar();
@@ -205,7 +209,7 @@ public class PlayingField {
     public int evaluateGameWinStatus() {
         for (int i = 0; i < fieldUser.length; i++) {
             for (int j = 0; j < fieldUser[0].length; j++) {
-                if (fieldUser[i][j] == Symbols.HIDDENFIELD.asChar()) {
+                if (fieldUser[i][j] == Symbols.HIDDENFIELD.asChar() && field[i][j] != Symbols.MINE.asChar()) {
                     return 0;
                 }
             }
